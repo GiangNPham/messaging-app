@@ -1,0 +1,30 @@
+GET http://localhost:3000/login
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "Tommy Teo",
+    "password": "12345678"
+}
+
+###
+GET http://localhost:3000/user/6600372b50274f8f2d812495
+
+###
+PATCH http://localhost:3000/user/6600372b50274f8f2d812495/username
+Content-Type: application/json
+
+{
+    "newUsername": "Tommy Teo1"
+}
+
+###
+PATCH http://localhost:3000/user/6600372b50274f8f2d812495/password
+Content-Type: application/json
+
+{
+    "newPassword": "12345678"
+}
