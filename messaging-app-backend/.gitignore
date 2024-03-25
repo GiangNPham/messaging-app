@@ -1,4 +1,5 @@
 .env
+rest_test
 # Logs
 logs
 *.log
