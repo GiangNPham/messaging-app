@@ -31,9 +31,9 @@ router.post(
         res.json(newUser);
         //   res.redirect("/login");
       } catch (err) {
-        res.status(400).json(err);
+        res.status(400).json({ err });
       }
-    } else res.send({ errors: result.array() });
+    } else res.send({ err: result.array() });
   }
 );
 

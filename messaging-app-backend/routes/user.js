@@ -31,7 +31,7 @@ router.patch(
       } catch (err) {
         res.status(400).json(err);
       }
-    } else res.status(400).json({ errors: result.array() });
+    } else res.status(400).json({ err: result.array() });
   }
 );
 
@@ -53,9 +53,9 @@ router.patch(
         );
         res.json(newDoc);
       } catch (err) {
-        res.status(400).json("err");
+        res.status(400).json({ err });
       }
-    } else res.json({ errors: result.array() });
+    } else res.json({ err: result.array() });
   }
 );
 

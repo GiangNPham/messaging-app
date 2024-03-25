@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const conversationSchema = new Schema({
   friendList: {
-    type: [mongoose.Types.ObjectId],
+    type: String,
   },
 });
-module.exports = mongoose.model("Message", conversationSchema);
+module.exports = mongoose.model("Conversation", conversationSchema);

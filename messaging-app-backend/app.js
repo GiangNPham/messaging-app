@@ -9,8 +9,8 @@ const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const loginRouter = require("./routes/login");
 const signupRouter = require("./routes/signup");
-// const logoutRouter = require("./routes/logout");
-// const chatRouter = require("./routes/chat");
+const logoutRouter = require("./routes/logout");
+const chatRouter = require("./routes/chat");
 
 require("dotenv").config();
 
@@ -46,8 +46,8 @@ app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
-// app.use("/logout", logoutRouter);
-// app.use("/chat", chatRouter);
+app.use("/logout", logoutRouter);
+app.use("/chat", chatRouter);
 
 /*
 // catch 404 and forward to error handler
