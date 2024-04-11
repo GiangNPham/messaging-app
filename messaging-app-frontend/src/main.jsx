@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
+import { BrowserRouter } from "react-router-dom";
 
 /*
 
@@ -16,9 +17,12 @@ small components:
 1. nav (icon, (log in, sign up) / (chat, log out))
 2. footer (product of GP)
 */
+// https://www.youtube.com/watch?v=SDMs2Pq6w90
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
