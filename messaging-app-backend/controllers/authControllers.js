@@ -76,4 +76,17 @@ const logoutUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser, logoutUser };
+const checkAuthentication = async (req, res) => {
+  try {
+    const cki = req.cookies["jwt"];
+    if (cki) {
+      return res.status(200).json({ msg: "Authenticated" });
+    } else {
+      return res.status(401).json({ err: "Unauthenticated" });
+    }
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
+
+module.exports = { signupUser, loginUser, logoutUser, checkAuthentication };
