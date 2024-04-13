@@ -14,7 +14,7 @@ export default function Login() {
   const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/user");
+    if (isAuthenticated) navigate("/dashboard");
   }, [isAuthenticated]);
 
   const loginHandler = async function (e) {
@@ -34,7 +34,7 @@ export default function Login() {
       // setUser(data.userID);
       console.log(data);
       console.log("Log in successfully");
-      navigate(`/`);
+      navigate(`/dashboard`);
     } else {
       setErrorMsg(data.err);
     }

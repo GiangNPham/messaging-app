@@ -44,6 +44,7 @@ const signupUser = async (req, res) => {
       password: hashedPs,
     });
     await newUser.save();
+    res.status(200).json("Sign up successfully");
   } catch (err) {
     res.status(400).json({ err });
   }
@@ -69,8 +70,8 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 1 });
-    res.json("Log out successfully");
+    await res.clearCookie("jwt");
+    res.status(200).json("Log out successfully");
   } catch (err) {
     res.status(400).json({ err });
   }

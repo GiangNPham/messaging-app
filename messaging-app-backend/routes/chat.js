@@ -9,14 +9,29 @@ const requireAuth = require("../middleware/authMiddleware");
 
 const {
   searchUser,
-  getConversations,
+  checkUser,
   getMessage,
+  createDirect,
+  createGroup,
 } = require("../controllers/chatControllers");
 
-// get all the conversations
-router.get("/", requireAuth, getConversations);
+//
 
-router.get("/:id", requireAuth, getMessage);
+// get messages for a conversation
+router.get("/conversation/:id", requireAuth, getMessage);
+
+// check if user exists
+router.get("/checkuser/:id", requireAuth, checkUser);
+
+// create direct chat
+router.post("/createDirect", requireAuth, createDirect);
+
+// create group chat
+router.post("/createGroup", requireAuth, createGroup);
+
+// ***** write controller for
+// 1. creating conversation (with group name) (convert the username to user id in db)
+// 2. creating message in a conversation
 
 // router.get("/", async (req, res) => {
 //   try {

@@ -7,7 +7,7 @@ const Conversation = require("../models/conversationSchema");
 
 // Get user's all conversations and all users
 
-const getConversationsAndUsers = async (req, res) => {
+const getConversations = async (req, res) => {
   try {
     const curUserID = res.userID;
 
@@ -15,11 +15,19 @@ const getConversationsAndUsers = async (req, res) => {
       friendList: { $elemMatch: { $eq: curUserID } },
     });
 
+    res.status(200).json({ allConversations });
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const curUserID = res.userID;
     const allUsers = await User.find({
       _id: { $ne: curUserID },
     }).select("-password");
-
-    res.status(200).json({ allChats: allConversations, allUsers: allUsers });
+    res.status(200).json({ allUsers });
   } catch (err) {
     res.status(400).json({ err });
   }
@@ -76,4 +84,4 @@ const updateUsername = async (req, res) => {
   }
 };
 
-module.exports = { getConversationsAndUsers, updatePassword, updateUsername };
+module.exports = { getConversations, getUsers, updatePassword, updateUsername };

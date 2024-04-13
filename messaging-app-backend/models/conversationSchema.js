@@ -6,5 +6,11 @@ const conversationSchema = new Schema({
     type: [String],
     // list of username
   },
+  friendListName: {
+    type: [String],
+  },
+  groupName: {
+    type: String,
+  },
 });
 module.exports = mongoose.model("Conversation", conversationSchema);

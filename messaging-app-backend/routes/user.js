@@ -7,12 +7,14 @@ const { check, validationResult } = require("express-validator");
 
 const requireAuth = require("../middleware/authMiddleware");
 const {
-  getConversationsAndUsers,
+  getConversations,
+  getUsers,
   updatePassword,
   updateUsername,
 } = require("../controllers/userControllers");
 
-router.get("/", requireAuth, getConversationsAndUsers);
+router.get("/conversations", requireAuth, getConversations);
+router.get("/users", requireAuth, getUsers);
 router.patch("/password", requireAuth, updatePassword);
 router.patch("/username", requireAuth, updateUsername);
 

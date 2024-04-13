@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userSchema");
 
 const requireAuth = (req, res, next) => {
-  if (req.cookies.jwt == undefined)
+  if (req.cookies.jwt === null)
     return res.status(401).json({ err: "Unauthorized" });
   const token = req.cookies.jwt;
 
@@ -16,7 +16,7 @@ const requireAuth = (req, res, next) => {
       }
     });
   } else {
-    return res.status(401).json({ err: "Unauthorized" });
+    return res.status(401).json({ err: token });
   }
 };
 
