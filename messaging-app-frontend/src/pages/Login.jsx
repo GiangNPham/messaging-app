@@ -30,9 +30,7 @@ export default function Login() {
     });
     const data = await res.json();
     if (res.status === 200) {
-      // setIsAuth(data.isAuth);
-      // setUser(data.userID);
-      console.log(data);
+      // console.log(data);
       console.log("Log in successfully");
       navigate(`/dashboard`);
     } else {

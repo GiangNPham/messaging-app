@@ -106,7 +106,7 @@ export default function Createbox({ isBlur, toggleBlur }) {
         <label htmlFor="search">To: </label>
         <input
           name="search"
-          className="w-10/12 bg-secondary rounded"
+          className="w-10/12 bg-secondary rounded pl-2"
           type="string"
           required
           value={userName}
@@ -139,7 +139,7 @@ export default function Createbox({ isBlur, toggleBlur }) {
             <input
               type="text"
               name="groupName"
-              className="w-3/5 rounded bg-secondary"
+              className="w-3/5 rounded bg-secondary pl-2"
               onChange={(e) => setGroupName(e.target.value.trim())}
             />
           </div>

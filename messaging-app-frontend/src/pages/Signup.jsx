@@ -26,7 +26,7 @@ export default function Signup() {
       body: JSON.stringify({ username, password, passwordConfirmation }),
     });
     const data = await res.json();
-    if (res.status == 200) {
+    if (res.status === 200) {
       navigate(`/`);
     } else {
       setErrorMsg(data.err);

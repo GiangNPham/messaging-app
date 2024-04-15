@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Createbox from "../components/Createbox";
+import Loading from "../pages/Loading";
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [userList, setUserList] = useState([]);
   const [isBlur, setIsBlur] = useState(false);
+  const [curUsername, setCurUsername] = useState("");
 
   const navigate = useNavigate();
 
@@ -26,7 +29,7 @@ export default function Dashboard() {
         const data = await res.json();
 
         if (res.status === 200) {
-          console.log(data);
+          setCurUsername(data.curUsername);
           setUserList(data.allUsers);
         } else {
           navigate("/");
@@ -44,7 +47,7 @@ export default function Dashboard() {
     <>
       {isLoading ? (
         // something to show loading
-        <div>Loading</div>
+        <Loading />
       ) : (
         <>
           <div className={isBlur ? "blur-sm" : ""}>
@@ -52,7 +55,8 @@ export default function Dashboard() {
             <Sidebar toggleBlur={toggleBlur} />
             <div className="pl-80 pt-28">
               <h1 className="font-semibold text-4xl text-primary text-center mt-5">
-                Start connecting to {userList.length} users all over the world
+                Welcome {curUsername}! Start connecting to {userList.length}{" "}
+                users all over the world
               </h1>
               <div className="text-2xl mx-32 mt-8 ">
                 {userList.map((user, it) => {

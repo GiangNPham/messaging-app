@@ -39,8 +39,8 @@ export default function Chat() {
       if (res.status === 200) {
         setMessageContent("");
       } else {
-        console.log(data, false);
-        // navigate("/");
+        // console.log(data, false);
+        navigate("/");
       }
     } catch (err) {
       console.error(err);
@@ -69,7 +69,7 @@ export default function Chat() {
       }
     }
     fetchChats();
-  }, [id, messages]);
+  }, []);
   return (
     <>
       <Navbar />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
@@ -39,8 +40,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/chat/:id" element={<Chat />} />
 
-        {/* <Route path="/user" element={<Profile />} />
-        <Route path="/chat/:chatID" element={<Chat />} /> */}
+        <Route path="/user" element={<Profile />} />
 
         {/* <Route
           exact

@@ -1,0 +1,7 @@
+.chatbox {
+  height: 40rem;
+}
+.chatCreate::placeholder {
+  color: white;
+  opacity: 1;
+}
