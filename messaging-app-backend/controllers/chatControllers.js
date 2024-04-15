@@ -124,6 +124,8 @@ const getMessage = async (req, res) => {
       _id: { $eq: conversationID },
       friendList: { $elemMatch: { $eq: curUserID } },
     });
+    const groupName = chosenConversation.groupName;
+    const friendListName = chosenConversation.friendListName;
 
     if (Object.keys(chosenConversation) === 0)
       return res.status(400).json({ err: "No permission" });
@@ -132,7 +134,28 @@ const getMessage = async (req, res) => {
       destination: { $eq: conversationID },
     });
 
-    res.status(200).json({ allMessages });
+    res.status(200).json({ allMessages, curUserID, groupName, friendListName });
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
+
+const createMessage = async (req, res) => {
+  try {
+    const curUserID = res.userID;
+    const conversationID = req.params.id;
+    const { messageContent } = req.body;
+    const sender = await User.findOne({ _id: curUserID });
+    const senderName = sender.username;
+
+    const newMessage = new Message({
+      sender: curUserID,
+      senderName: senderName,
+      destination: conversationID,
+      content: messageContent,
+    });
+    await newMessage.save();
+    res.status(200).json("Sent");
   } catch (err) {
     res.status(400).json({ err });
   }
@@ -144,4 +167,5 @@ module.exports = {
   getMessage,
   createDirect,
   createGroup,
+  createMessage,
 };

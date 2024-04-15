@@ -32,7 +32,7 @@ export default function Sidebar({ toggleBlur }) {
 
   return (
     <>
-      <aside className="bg-secondary fixed top-24 left-0 z-40 w-2/12 h-full text-text">
+      <aside className="bg-secondary fixed top-24 left-0 z-40 w-72 h-full text-text border-r-2 border-accent ">
         <div className="flex text-2xl mr-4 ml-7 mt-5">
           <h1 className="font-semibold">Conversations</h1>
           <button className="ml-auto" onClick={() => toggleBlur()}>

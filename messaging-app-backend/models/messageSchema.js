@@ -5,6 +5,9 @@ const messageSchema = new Schema({
   sender: {
     type: String,
   },
+  senderName: {
+    type: String,
+  },
   destination: {
     type: String,
   },

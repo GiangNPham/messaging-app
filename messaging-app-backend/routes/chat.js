@@ -13,6 +13,7 @@ const {
   getMessage,
   createDirect,
   createGroup,
+  createMessage,
 } = require("../controllers/chatControllers");
 
 //
@@ -28,6 +29,9 @@ router.post("/createDirect", requireAuth, createDirect);
 
 // create group chat
 router.post("/createGroup", requireAuth, createGroup);
+
+// create a message
+router.post("/createMessage/:id", requireAuth, createMessage);
 
 // ***** write controller for
 // 1. creating conversation (with group name) (convert the username to user id in db)
