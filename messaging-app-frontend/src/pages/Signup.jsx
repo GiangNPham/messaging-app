@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/authContext";
-import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 export default function Signup() {
@@ -25,14 +24,9 @@ export default function Signup() {
         password,
         passwordConfirmation,
       });
-      if (res.status === 200) {
-        navigate(`/`);
-      } else {
-        // console.log(res.data);
-        setErrorMsg(res.data.err);
-      }
+      navigate(`/`);
     } catch (err) {
-      console.error(err);
+      setErrorMsg(err.response.data.err);
     }
     // const res = await fetch(`http://localhost:3001/auth/signup`, {
     //   method: "POST",

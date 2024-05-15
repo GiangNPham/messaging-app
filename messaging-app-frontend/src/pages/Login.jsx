@@ -16,7 +16,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated) navigate("/dashboard");
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const loginHandler = async (e) => {
     e.preventDefault();

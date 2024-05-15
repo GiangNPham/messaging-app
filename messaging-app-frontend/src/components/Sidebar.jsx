@@ -10,22 +10,27 @@ export default function Sidebar({ toggleBlur }) {
 
   useEffect(() => {
     async function fetchConversations() {
-      const res = await axios.get("http://localhost:3001/user/conversations");
-      // const res = await fetch(`http://localhost:3001/user/conversations`, {
-      //   method: "GET",
-      //   credentials: "include",
-      // });
-
-      // const data = await res.json();
-
-      if (res.status === 200) {
+      try {
+        const res = await axios.get("http://localhost:3001/user/conversations");
         setAllConversations(res.data.allConversations);
-      } else {
+        // const res = await fetch(`http://localhost:3001/user/conversations`, {
+        //   method: "GET",
+        //   credentials: "include",
+        // });
+
+        // const data = await res.json();
+
+        // if (res.status === 200) {
+        //   setAllConversations(res.data.allConversations);
+        // } else {
+        //   navigate("/");
+        // }
+      } catch (err) {
         navigate("/");
       }
     }
     fetchConversations();
-  }, [navigate]);
+  }, []);
 
   const chatNavigate = (id) => {
     navigate("/chat/" + id);
