@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -21,27 +22,38 @@ export default function Chat() {
     e.preventDefault();
     if (messageContent.length === 0) return;
     try {
-      const res = await fetch(
+      const res = await axios.post(
         "http://localhost:3001/chat/createMessage/" + id,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-
-          body: JSON.stringify({ messageContent }),
+          messageContent: messageContent,
         }
       );
-
-      const data = await res.json();
-
       if (res.status === 200) {
         setMessageContent("");
       } else {
-        // console.log(data, false);
         navigate("/");
       }
+      //   const res = await fetch(
+      //     "http://localhost:3001/chat/createMessage/" + id,
+      //     {
+      //       method: "POST",
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //       // credentials: "include",
+
+      //       body: JSON.stringify({ messageContent }),
+      //     }
+      //   );
+
+      //   const data = await res.json();
+
+      //   if (res.status === 200) {
+      //     setMessageContent("");
+      //   } else {
+      //     // console.log(data, false);
+      //     navigate("/");
+      //   }
     } catch (err) {
       console.error(err);
     }
@@ -49,27 +61,39 @@ export default function Chat() {
 
   useEffect(() => {
     async function fetchChats() {
+      axios
+        .get("http://localhost:3001/chat/conversation/" + id, {
+          withCredentials: true,
+        })
+        .then(async (res) => {
+          const data = await res.data;
+          if (res.status === 200) {
+            setMessages(data.allMessages);
+            setCurUser(data.curUserID);
+            setGroupName(data.groupName);
+            setFriendListName(data.friendListName);
+          } else {
+            navigate("/");
+          }
+        });
       // console.log(user._id);
-
-      const res = await fetch(`http://localhost:3001/chat/conversation/` + id, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      const data = await res.json();
-      if (res.status === 200) {
-        setMessages(data.allMessages);
-        setCurUser(data.curUserID);
-        setGroupName(data.groupName);
-        setFriendListName(data.friendListName);
-
-        // console.log("here");
-      } else {
-        navigate("/");
-      }
+      // const res = await fetch(`http://localhost:3001/chat/conversation/` + id, {
+      //   method: "GET",
+      //   credentials: "include",
+      // });
+      // const data = await res.json();
+      // if (res.status === 200) {
+      //   setMessages(data.allMessages);
+      //   setCurUser(data.curUserID);
+      //   setGroupName(data.groupName);
+      //   setFriendListName(data.friendListName);
+      //   // console.log("here");
+      // } else {
+      //   navigate("/");
+      // }
     }
     fetchChats();
-  }, []);
+  }, [id, navigate]);
   return (
     <>
       <Navbar />

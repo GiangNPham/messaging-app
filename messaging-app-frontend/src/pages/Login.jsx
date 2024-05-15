@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useState, useEffect, useContext } from "react";
 
 import { AuthContext } from "../context/authContext";
+import axios from "axios";
 
 // export default function Login({ isAuth, setIsAuth, user, setUser }) {
 export default function Login() {
@@ -17,25 +18,39 @@ export default function Login() {
     if (isAuthenticated) navigate("/dashboard");
   }, [isAuthenticated]);
 
-  const loginHandler = async function (e) {
+  const loginHandler = async (e) => {
     e.preventDefault();
-
-    const res = await fetch(`http://localhost:3001/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      // console.log(data);
-      console.log("Log in successfully");
-      navigate(`/dashboard`);
-    } else {
-      setErrorMsg(data.err);
+    try {
+      const res = await axios.post("http://localhost:3001/auth/login", {
+        username: username,
+        password: password,
+      });
+      navigate("/dashboard");
+      // console.log(res);
+      // if (res.response.status === 200) {
+      //   navigate("/dashboard");
+      // } else {
+      //   console.log(res.response.data.err);
+      //   setErrorMsg(res.response.data.err);
+      // }
+    } catch (err) {
+      setErrorMsg(err.response.data.err);
     }
+    // const res = await fetch(`http://localhost:3001/auth/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   credentials: "include",
+    //   body: JSON.stringify({ username, password }),
+    // });
+    // const data = await res.json();
+    // if (res.status === 200) {
+    //   // console.log(data);
+    //   console.log("Log in successfully");
+    //   navigate(`/dashboard`);
+    // } else {
+    //   setErrorMsg(data.err);
   };
 
   return (

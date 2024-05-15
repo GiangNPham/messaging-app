@@ -9,6 +9,7 @@ import "../styles/Navbar.css";
 import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -16,11 +17,12 @@ export default function Navbar() {
   const logoutHandler = async function (e) {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3001/auth/logout`, {
-        method: "GET",
-        withCredntials: true,
-        credentials: "include",
-      });
+      const res = await axios.get("http://localhost:3001/auth/logout");
+      // const res = await fetch(`http://localhost:3001/auth/logout`, {
+      //   method: "GET",
+      //   withCredntials: true,
+      //   credentials: "include",
+      // });
       // const data = await res.json();
       if (res.status === 200) {
         // console.log(data);

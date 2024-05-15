@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Sidebar({ toggleBlur }) {
   const navigate = useNavigate();
@@ -9,22 +10,22 @@ export default function Sidebar({ toggleBlur }) {
 
   useEffect(() => {
     async function fetchConversations() {
-      const res = await fetch(`http://localhost:3001/user/conversations`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const res = await axios.get("http://localhost:3001/user/conversations");
+      // const res = await fetch(`http://localhost:3001/user/conversations`, {
+      //   method: "GET",
+      //   credentials: "include",
+      // });
 
-      const data = await res.json();
+      // const data = await res.json();
 
       if (res.status === 200) {
-        console.log(data);
-        setAllConversations(data.allConversations);
+        setAllConversations(res.data.allConversations);
       } else {
         navigate("/");
       }
     }
     fetchConversations();
-  }, []);
+  }, [navigate]);
 
   const chatNavigate = (id) => {
     navigate("/chat/" + id);

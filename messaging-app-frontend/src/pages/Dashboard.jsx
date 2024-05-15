@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Createbox from "../components/Createbox";
 import Loading from "../pages/Loading";
+import axios from "axios";
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,19 +22,27 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:3001/user/users", {
-          method: "GET",
-          credentials: "include",
-        });
-
-        const data = await res.json();
-
+        const res = await axios.get("http://localhost:3001/user/users");
         if (res.status === 200) {
+          const data = res.data;
           setCurUsername(data.curUsername);
           setUserList(data.allUsers);
         } else {
           navigate("/");
         }
+        // const res = await fetch("http://localhost:3001/user/users", {
+        //   method: "GET",
+        //   credentials: "include",
+        // });
+
+        // const data = await res.json();
+
+        // if (res.status === 200) {
+        //   setCurUsername(data.curUsername);
+        //   setUserList(data.allUsers);
+        // } else {
+        //   navigate("/");
+        // }
       } catch (err) {
         console.error(err);
       } finally {

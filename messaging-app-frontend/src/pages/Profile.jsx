@@ -3,56 +3,61 @@ import { useNavigate } from "react-router-dom";
 
 import Loading from "../pages/Loading";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 export default function Profile() {
   // set an useState of isLoading to prevent fetching the front end before the authorization finished
   // const [isLoading, setIsLoading] = useState(true);
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState();
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
-  const updateHandle = async function (e) {
+  const updateHandle = async (e) => {
     e.preventDefault();
 
     try {
       if (username.length !== 0) {
-        const res = await fetch(`http://localhost:3001/user/username`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ username }),
+        const res = await axios.patch("http://localhost:3001/user/username`", {
+          username,
         });
-        const data = await res.json();
+        // const res = await fetch(`http://localhost:3001/user/username`, {
+        //   method: "PATCH",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   credentials: "include",
+        //   body: JSON.stringify({ username }),
+        // });
+        // const data = await res.json();
         if (res.status === 200) {
-          console.log(data);
           navigate("/dashboard");
         } else {
-          setErrorMsg(data.err);
+          setErrorMsg(res.data.err);
         }
       }
       if (password.length !== 0 || passwordConfirmation.length !== 0) {
         if (password !== passwordConfirmation) {
           return setErrorMsg("Two passwords are not the same");
         }
-        const res = await fetch(`http://localhost:3001/user/password`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ password }),
+        const res = await axios.patch("http://localhost:3001/user/password", {
+          password,
         });
-        const data = await res.json();
+        // const res = await fetch(`http://localhost:3001/user/password`, {
+        //   method: "PATCH",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   credentials: "include",
+        //   body: JSON.stringify({ password }),
+        // });
+        // const data = await res.json();
         if (res.status === 200) {
-          console.log(data);
           navigate("/dashboard");
         } else {
-          setErrorMsg(data.err);
+          setErrorMsg(res.data.err);
         }
       }
     } catch (err) {

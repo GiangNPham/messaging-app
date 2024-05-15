@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/authContext";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export default function Signup() {
   const [username, setUsername] = useState();
@@ -15,22 +17,36 @@ export default function Signup() {
     if (isAuthenticated) navigate("/user");
   }, [isAuthenticated]);
 
-  const signupHandler = async function (e) {
+  const signupHandler = async (e) => {
     e.preventDefault();
-
-    const res = await fetch(`http://localhost:3001/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password, passwordConfirmation }),
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      navigate(`/`);
-    } else {
-      setErrorMsg(data.err);
+    try {
+      const res = await axios.post("http://localhost:3001/auth/signup", {
+        username,
+        password,
+        passwordConfirmation,
+      });
+      if (res.status === 200) {
+        navigate(`/`);
+      } else {
+        // console.log(res.data);
+        setErrorMsg(res.data.err);
+      }
+    } catch (err) {
+      console.error(err);
     }
+    // const res = await fetch(`http://localhost:3001/auth/signup`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ username, password, passwordConfirmation }),
+    // });
+    // const data = await res.json();
+    // if (res.status === 200) {
+    //   navigate(`/`);
+    // } else {
+    //   setErrorMsg(data.err);
+    // }
   };
 
   return (

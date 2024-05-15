@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Createbox({ isBlur, toggleBlur }) {
   const [errorMsg, setErrorMsg] = useState("");
@@ -16,17 +17,20 @@ export default function Createbox({ isBlur, toggleBlur }) {
     e.preventDefault();
     try {
       // check if user exists
-      const res = await fetch(
-        "http://localhost:3001/chat/checkuser/" + userName,
-        {
-          method: "GET",
-          credentials: "include",
-        }
+      const res = await axios.get(
+        "http://localhost:3001/chat/checkuser/" + userName
       );
-      const data = await res.json();
+      // const res = await fetch(
+      //   "http://localhost:3001/chat/checkuser/" + userName,
+      //   {
+      //     method: "GET",
+      //     credentials: "include",
+      //   }
+      // );
+      // const data = await res.json();
       //   console.log(data);
       if (res.status !== 200) {
-        return setErrorMsg(userName + ": " + data.err);
+        return setErrorMsg(userName + ": " + res.data.err);
       }
 
       // check if user has already been added
@@ -50,18 +54,14 @@ export default function Createbox({ isBlur, toggleBlur }) {
     // 2 cases: 1-1 chat and group chat
     if (groupMem.length === 1) {
       try {
-        const res = await fetch("http://localhost:3001/chat/createDirect", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ groupMem }),
-        });
-
-        const data = await res.json();
+        const res = await axios.post(
+          "http://localhost:3001/chat/createDirect",
+          {
+            groupMem,
+          }
+        );
         if (res.status === 200) {
-          navigate("/chat/" + data.chatID);
+          navigate("/chat/" + res.data.chatID);
         }
       } catch (err) {
         console.log(err);
@@ -71,17 +71,21 @@ export default function Createbox({ isBlur, toggleBlur }) {
         if (groupName === "") {
           return setErrorMsg("Please fill out the group's name");
         }
-        const res = await fetch("http://localhost:3001/chat/createGroup", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ groupMem, groupName }),
+        const res = await axios.post("http://localhost:3001/chat/createGroup", {
+          groupMem,
+          groupName,
         });
-        const data = await res.json();
+        // const res = await fetch("http://localhost:3001/chat/createGroup", {
+        //   method: "POST",
+        //   credentials: "include",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ groupMem, groupName }),
+        // });
+        // const data = await res.json();
         if (res.status === 200) {
-          navigate("/chat/" + data.chatID);
+          navigate("/chat/" + res.data.chatID);
         }
       } catch (err) {
         console.log(err);
