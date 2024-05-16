@@ -155,7 +155,8 @@ const createMessage = async (req, res) => {
       content: messageContent,
     });
     await newMessage.save();
-    res.status(200).json("Sent");
+
+    res.status(200).json({ newMessage });
   } catch (err) {
     res.status(400).json({ err });
   }

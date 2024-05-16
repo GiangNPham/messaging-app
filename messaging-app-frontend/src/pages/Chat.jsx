@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/Chat.css";
 
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:3001");
+
 export default function Chat() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -28,72 +31,40 @@ export default function Chat() {
           messageContent: messageContent,
         }
       );
-      if (res.status === 200) {
-        setMessageContent("");
-      } else {
-        navigate("/");
-      }
-      //   const res = await fetch(
-      //     "http://localhost:3001/chat/createMessage/" + id,
-      //     {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       // credentials: "include",
-
-      //       body: JSON.stringify({ messageContent }),
-      //     }
-      //   );
-
-      //   const data = await res.json();
-
-      //   if (res.status === 200) {
-      //     setMessageContent("");
-      //   } else {
-      //     // console.log(data, false);
-      //     navigate("/");
-      //   }
+      // console.log(res.data.newMessage);
+      socket.emit("sendMessage", res.data.newMessage);
+      setMessageContent("");
     } catch (err) {
-      console.error(err);
+      navigate("/");
     }
   };
 
   useEffect(() => {
     async function fetchChats() {
-      axios
-        .get("http://localhost:3001/chat/conversation/" + id, {
-          withCredentials: true,
-        })
-        .then(async (res) => {
-          const data = await res.data;
-          if (res.status === 200) {
-            setMessages(data.allMessages);
-            setCurUser(data.curUserID);
-            setGroupName(data.groupName);
-            setFriendListName(data.friendListName);
-          } else {
-            navigate("/");
-          }
-        });
-      // console.log(user._id);
-      // const res = await fetch(`http://localhost:3001/chat/conversation/` + id, {
-      //   method: "GET",
-      //   credentials: "include",
-      // });
-      // const data = await res.json();
-      // if (res.status === 200) {
-      //   setMessages(data.allMessages);
-      //   setCurUser(data.curUserID);
-      //   setGroupName(data.groupName);
-      //   setFriendListName(data.friendListName);
-      //   // console.log("here");
-      // } else {
-      //   navigate("/");
-      // }
+      try {
+        const res = await axios.get(
+          "http://localhost:3001/chat/conversation/" + id
+        );
+        const data = res.data;
+
+        setMessages(data.allMessages);
+        setCurUser(data.curUserID);
+        setGroupName(data.groupName);
+        setFriendListName(data.friendListName);
+      } catch (err) {
+        console.error(err);
+      }
     }
     fetchChats();
   }, [id, navigate]);
+
+  useEffect(() => {
+    socket.on("receiveMessage", (message) => {
+      // console.log("hihi");
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+  }, []);
+
   return (
     <>
       <Navbar />

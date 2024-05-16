@@ -5,6 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const session = require("express-session");
 const cors = require("cors");
+const { Server } = require("socket.io");
+const { createServer } = require("node:http");
 
 const connectDB = require("./config/db");
 
@@ -36,8 +38,6 @@ app.use(
 // set up database
 connectDB();
 
-app.listen(3001);
-
 // app.use(
 //   session({
 //     secret: process.env.cookie_key,
@@ -51,6 +51,23 @@ app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/chat", chatRouter);
 
+const server = createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  socket.on("sendMessage", (message) => {
+    // console.log(message);
+    socket.emit("receiveMessage", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
+server.listen(3001, () => {
+  console.log("server is running");
+});
 /*
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
