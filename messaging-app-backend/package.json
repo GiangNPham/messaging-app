@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon app --host 127.0.0.1"
+    "dev": "nodemon app"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,0 +1,8 @@
+.app {
+  background: rgb(0, 212, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 255, 1) 12%,
+    rgba(207, 207, 230, 1) 76%
+  );
+}

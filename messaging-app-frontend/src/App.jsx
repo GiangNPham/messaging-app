@@ -11,12 +11,8 @@ import "./App.css";
 import { AuthProvider } from "./context/authContext";
 
 function App() {
-  // const [isAuth, setIsAuth] = useState(false);
-  // const [user, setUser] = useState();
-  // const [allChats, setAllChats] = useState([]);
-  // const [allUsers, setAllUsers] = useState([]);
   return (
-    <div>
+    <div className="app">
       <Routes>
         <Route
           path="/"
@@ -40,49 +36,6 @@ function App() {
         <Route path="/chat/:id" element={<Chat />} />
 
         <Route path="/user" element={<Profile />} />
-
-        {/* <Route
-          exact
-          path="/"
-          element={
-            isAuth ? (
-              <Chat
-                isAuth={isAuth}
-                setIsAuth={setIsAuth}
-                user={user}
-                setUser={setUser}
-                allChats={allChats}
-                setAllChats={setAllChats}
-                allUsers={allUsers}
-                setAllUsers={setAllUsers}
-              />
-            ) : (
-              <Navigate to={"/login"} />
-            )
-          }
-        ></Route>
-        <Route
-          path="/login"
-          element={
-            isAuth ? (
-              <Navigate to={"/"} />
-            ) : (
-              <Login
-                isAuth={isAuth}
-                setIsAuth={setIsAuth}
-                user={user}
-                setUser={setUser}
-              />
-            )
-          }
-        ></Route>
-        <Route
-          path="/signup"
-          element={isAuth ? <Navigate to={"/"} /> : <Signup />}
-        ></Route>
-
-        <Route path="/user/:id" element={<Profile />}></Route>
-        <Route path="/chat/:id" element={<Chat />}></Route> */}
       </Routes>
     </div>
   );

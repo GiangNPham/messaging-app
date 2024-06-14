@@ -5,7 +5,7 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
-import "../styles/Navbar.css";
+import "../styles/navbar.css";
 import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";

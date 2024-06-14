@@ -7,7 +7,7 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "../styles/Chat.css";
+import "../styles/chat.css";
 
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:3001");

@@ -56,7 +56,6 @@ const io = new Server(server);
 
 io.on("connection", (socket) => {
   socket.on("sendMessage", (message) => {
-    // console.log(message);
     socket.emit("receiveMessage", message);
   });
 

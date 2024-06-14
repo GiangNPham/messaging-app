@@ -1,106 +1,117 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Form, Input, notification } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { useEffect, useContext } from "react";
+
 import { AuthContext } from "../context/authContext";
 import axios from "axios";
 
+import login from "../assets/login.png";
+import "../styles/signup.css";
+
 export default function Signup() {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [passwordConfirmation, setPasswordConfirmation] = useState();
-  const [errorMsg, setErrorMsg] = useState("");
+  const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     if (isAuthenticated) navigate("/user");
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
-  const signupHandler = async (e) => {
-    e.preventDefault();
+  const notifyError = (e) => {
+    notification.error({
+      message: "Cannot sign up!",
+      description: e.response.data.err,
+    });
+  };
+
+  const signupHandler = async (values) => {
     try {
-      const res = await axios.post("http://localhost:3001/auth/signup", {
-        username,
-        password,
-        passwordConfirmation,
+      await axios.post("http://localhost:3001/auth/signup", {
+        username: values.username.trim(),
+        password: values.password.trim(),
+        passwordConfirmation: values.passwordConfirmation.trim(),
       });
-      navigate(`/`);
+      navigate("/");
     } catch (err) {
-      setErrorMsg(err.response.data.err);
+      notifyError(err);
     }
-    // const res = await fetch(`http://localhost:3001/auth/signup`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ username, password, passwordConfirmation }),
-    // });
-    // const data = await res.json();
-    // if (res.status === 200) {
-    //   navigate(`/`);
-    // } else {
-    //   setErrorMsg(data.err);
-    // }
   };
 
   return (
-    <div className="grid grid-cols-2 bg-background place-items-center h-screen">
-      <div className="mb-14 ml-56">
-        <h1 className="text-primary text-5xl">
-          Welcome to <b>Messenger clone</b>
-        </h1>
-        <p className="text-primary text-xl text-right">
-          Connect people to their beloved ones
-        </p>
+    <div className="flex justify-center h-screen items-center signup-page">
+      <div>
+        <img src={login} alt="Login image" className="w-8/12" />
       </div>
-      <div className="mb-10 mr-80 border-4 border-primary bg-secondary rounded py-8 px-12 text-primary">
-        <h1 className="text-3xl font-semibold pb-3">Sign up</h1>
-        <form className="flex flex-col text-xl">
-          <label htmlFor="username" className="mb-2">
-            Username
-          </label>
-          <input
-            type="text"
+      <div className="py-8 px-10 rounded-md shadow-md h-2/5 w-4/12 bg-white flex  items-center">
+        <Form
+          onFinish={signupHandler}
+          autoComplete="off"
+          className="flex-grow"
+          form={form}
+        >
+          <h1 className="text-4xl font-semibold mb-5">Hi there!</h1>
+          <Form.Item
             name="username"
-            placeholder="Enter Username"
-            className="mb-4 py-1 px-2 w-72 rounded text-base"
-            required
-            onChange={(e) => setUsername(e.target.value.trim())}
-          />
-
-          <label htmlFor="password" className="mb-2">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            required
-            className="mb-4 py-1 px-2 rounded text-base"
-            onChange={(e) => setPassword(e.target.value.trim())}
-          />
-
-          <label htmlFor="passwordConfirmation" className="mb-2">
-            Password confirmation
-          </label>
-          <input
-            type="password"
-            name="passwordConfirmation"
-            placeholder="Confirm Password"
-            required
-            className="mb-4 py-1 px-2 rounded text-base"
-            onChange={(e) => setPasswordConfirmation(e.target.value.trim())}
-          />
-          {errorMsg != "" ? (
-            <h3 className="text-base text-red-600 mb-1">{errorMsg}</h3>
-          ) : null}
-          <button
-            onClick={signupHandler}
-            className="border-2 border-primary bg-primary text-accent rounded-md mb-2"
+            rules={[
+              {
+                required: true,
+                message: "Please input your username!",
+              },
+            ]}
           >
-            Submit
-          </button>
-        </form>
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon my-2" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon my-2" />}
+              placeholder="Password"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="passwordConfirmation"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password again!",
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon my-2" />}
+              placeholder="Password confirmation"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              className="login-form-button w-full font-semibold mb-1"
+            >
+              Sign up
+            </Button>
+            Or{" "}
+            <Link to="/" className="font-semibold">
+              log in!
+            </Link>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );
