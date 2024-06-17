@@ -1,0 +1,19 @@
+#sider-bg {
+  background-color: #212121;
+}
+.sidebar-color {
+  background-color: #212121;
+}
+.sidebar-diff-color {
+  background-color: #363434;
+}
+
+.sidebar-chat-btn {
+  padding-top: 1.4rem;
+  padding-bottom: 1.4rem;
+  border: 0;
+}
+
+.sidebar-chat-btn:hover {
+  background-color: #636161 !important;
+}

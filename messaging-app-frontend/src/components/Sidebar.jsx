@@ -1,67 +1,112 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button, ConfigProvider, Dropdown, Layout, Menu } from "antd";
+const { Sider } = Layout;
+import { MenuOutlined } from "@ant-design/icons";
+
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, Link } from "react-router-dom";
+
 import axios from "axios";
 
-export default function Sidebar({ toggleBlur }) {
+import "../styles/sidebar.css";
+
+export default function Sidebar() {
   const navigate = useNavigate();
   const [allConversations, setAllConversations] = useState([]);
 
-  useEffect(() => {
-    async function fetchConversations() {
-      try {
-        const res = await axios.get("http://localhost:3001/user/conversations");
-        setAllConversations(res.data.allConversations);
-        // const res = await fetch(`http://localhost:3001/user/conversations`, {
-        //   method: "GET",
-        //   credentials: "include",
-        // });
+  const fetchConversations = useCallback(async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/user/conversations");
+      const tmpConvo = res.data.allConversations;
+      const allConvos = tmpConvo.map((convo) => {
+        return {
+          key: convo._id,
+          label: convo.groupName || convo.friendListName.toString(),
+        };
+      });
+      setAllConversations(allConvos);
+    } catch (err) {
+      navigate("/");
+    }
+  }, [navigate]);
 
-        // const data = await res.json();
+  const onClickDropdown = ({ key }) => {
+    console.log(key);
+    if (key === "3") logoutHandler();
+  };
 
-        // if (res.status === 200) {
-        //   setAllConversations(res.data.allConversations);
-        // } else {
-        //   navigate("/");
-        // }
-      } catch (err) {
+  const logoutHandler = async function () {
+    try {
+      const res = await axios.get("http://localhost:3001/auth/logout");
+      if (res.status === 200) {
         navigate("/");
       }
+    } catch (err) {
+      console.error(err);
     }
+  };
+
+  useEffect(() => {
     fetchConversations();
-  }, []);
+  }, [fetchConversations]);
 
   const chatNavigate = (id) => {
     navigate("/chat/" + id);
   };
 
+  const items = [
+    {
+      key: "1",
+      label: <Link to="/">Dashboard</Link>,
+    },
+    {
+      key: "2",
+      label: <Link to="/user">Profile</Link>,
+    },
+    {
+      key: "3",
+      label: "Logout",
+    },
+  ];
+
   return (
-    <>
-      <aside className="bg-secondary fixed top-24 left-0 z-40 w-72 h-full text-text border-r-2 border-accent ">
-        <div className="flex text-2xl mr-4 ml-7 mt-5">
-          <h1 className="font-semibold">Conversations</h1>
-          <button className="ml-auto" onClick={() => toggleBlur()}>
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </button>
-        </div>
-        <div className="mt-4">
-          {allConversations.map((chat) => {
-            return (
-              <div key={chat._id} className="mb-4 text-xl mx-4 ">
-                <button
-                  onClick={() => chatNavigate(chat._id)}
-                  className="bg-accent w-full rounded py-1"
-                >
-                  {chat.friendList.length >= 3
-                    ? chat.groupName
-                    : chat.friendListName.toString()}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </aside>
-    </>
+    <Sider
+      breakpoint="sm"
+      collapsedWidth="100vw"
+      id="sider-bg"
+      width="25rem"
+      className="h-screen "
+    >
+      <div className="flex justify-between px-4 pt-5">
+        <h1 className="text-3xl text-white">Chat</h1>
+        <Dropdown
+          menu={{
+            items,
+            onClick: onClickDropdown,
+          }}
+          placement="bottomLeft"
+        >
+          <Button className="sidebar-color border-transparent text-white	">
+            <MenuOutlined />
+          </Button>
+        </Dropdown>
+      </div>
+      {/* <Menu mode="vertical" items={allConversations} inlineCollapsed={false} /> */}
+      <nav className="flex flex-col	mt-5 px-4">
+        {allConversations.map((convo, index) => {
+          return (
+            <ConfigProvider key={convo.key} wave={{ disabled: true }}>
+              <Button
+                className={`sidebar-chat-btn rounded flex ${
+                  index % 2 === 0 ? "sidebar-diff-color" : "sidebar-color"
+                } `}
+                onClick={() => chatNavigate(convo.key)}
+              >
+                <h1 className=" mr-auto text-white">{convo.label}</h1>
+              </Button>
+            </ConfigProvider>
+          );
+        })}
+      </nav>
+    </Sider>
   );
 }

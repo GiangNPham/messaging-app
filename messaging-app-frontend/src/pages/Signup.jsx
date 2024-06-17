@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input, notification } from "antd";
+import { Form, Input, notification } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useEffect, useContext } from "react";
 
@@ -41,10 +41,10 @@ export default function Signup() {
 
   return (
     <div className="flex justify-center h-screen items-center signup-page">
-      <div>
+      <div className="hidden lg:block">
         <img src={login} alt="Login image" className="w-8/12" />
       </div>
-      <div className="py-8 px-10 rounded-md shadow-md h-2/5 w-4/12 bg-white flex  items-center">
+      <div className="py-8 px-10 rounded-md shadow-md h-2/5 w-7/12 lg:w-4/12 bg-white flex  items-center">
         <Form
           onFinish={signupHandler}
           autoComplete="off"
@@ -98,14 +98,12 @@ export default function Signup() {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              className="login-form-button w-full font-semibold mb-1"
+            <button
+              type="submit"
+              className="login-form-button w-full font-semibold mb-1 py-2 rounded-lg text-base"
             >
               Sign up
-            </Button>
+            </button>
             Or{" "}
             <Link to="/" className="font-semibold">
               log in!

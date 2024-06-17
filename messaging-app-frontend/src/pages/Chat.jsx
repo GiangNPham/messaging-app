@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 
@@ -60,21 +59,17 @@ export default function Chat() {
 
   useEffect(() => {
     socket.on("receiveMessage", (message) => {
-      // console.log("hihi");
       setMessages((prevMessages) => [...prevMessages, message]);
     });
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <Sidebar />
-      <div className="mt-24 ml-72">
+    <h1>Hello</h1>
+    /* <div className="mt-24 ml-72">
         <h1 className="text-2xl font-semibold ml-14 pt-5 border-b border-slate-700 w-11/12">
           {friendListName.length === 2 ? friendListName.toString() : groupName}
         </h1>
 
-        {/* all messages here */}
         <div className="text-black overflow-y-scroll  bg-secondary mt-5 chatbox mx-14 rounded-t pt-2 px-3">
           {messages.map((message) => {
             if (message.sender !== curUser) {
@@ -97,7 +92,6 @@ export default function Chat() {
             }
           })}
         </div>
-        {/* create new message box */}
         <form className="mx-14 flex" onSubmit={(e) => createMessage(e)}>
           <input
             className="py-2 pl-4 bg-primary w-full text-black rounded-bl chatCreate"
@@ -112,7 +106,6 @@ export default function Chat() {
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </form>
-      </div>
-    </>
+      </div> */
   );
 }

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input, notification } from "antd";
+import { Form, Input, notification } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import PropTypes from "prop-types";
@@ -41,18 +41,20 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center h-screen items-center	login-page">
-      <div>
+    <div className="flex justify-center items-center h-screen absolute top-0 left-0 w-screen login-page">
+      <div className="hidden lg:block">
         <img src={login} alt="Login image" className="w-8/12" />
       </div>
-      <div className="py-8 px-10 rounded-md shadow-md h-2/5 w-4/12 bg-white flex  items-center">
+      <div className="login-modal py-8 px-10 rounded-md shadow-md h-2/5 w-7/12 lg:w-4/12 flex  items-center">
         <Form
           onFinish={loginHandler}
           autoComplete="off"
           className="flex-grow"
           form={form}
         >
-          <h1 className="text-4xl font-semibold mb-5">Hi there!</h1>
+          <h1 className="text-2xl mt-2 lg:text-4xl font-semibold mb-5">
+            Hi there!
+          </h1>
           <Form.Item
             name="username"
             rules={[
@@ -84,14 +86,12 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              className="login-form-button w-full font-semibold mb-1"
+            <button
+              type="submit"
+              className="login-form-button w-full font-semibold mb-1 rounded-lg py-2 text-base"
             >
               Log in
-            </Button>
+            </button>
             Or{" "}
             <Link to="/signup" className="font-semibold">
               register now!

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Loading from "../pages/Loading";
-import Navbar from "../components/Navbar";
 import axios from "axios";
 
 export default function Profile() {
@@ -69,31 +68,8 @@ export default function Profile() {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchChats = async () => {
-  //     try {
-  //       const res = await fetch("http://localhost:3001/user", {
-  //         method: "GET",
-  //         credentials: "include",
-  //       });
-
-  //       const data = await res.json();
-  //       if (res.status === 200) console.log(data);
-  //       else {
-  //         navigate("/");
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchChats();
-  // }, []);
-
   return (
     <>
-      <Navbar />
       <div className="flex justify-center items-center h-screen w-screen">
         <form
           className="flex flex-col bg-secondary py-10 px-12 rounded-md"

@@ -1,9 +1,14 @@
 .signup-page h1 {
-  color: #6495ed;
+  color: #212121;
 }
 
 .signup-page button {
-  background-color: #6495ed;
+  background-color: #212121;
+  color: white;
+}
+
+.signup-page button:hover {
+  background-color: #383838;
 }
 
 .signup-page .ant-form-item {

@@ -1,48 +1,25 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Createbox from "../components/Createbox";
 import Loading from "../pages/Loading";
 import axios from "axios";
+import { Empty, Layout } from "antd";
+import { Content } from "antd/es/layout/layout";
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userList, setUserList] = useState([]);
-  const [isBlur, setIsBlur] = useState(false);
-  const [curUsername, setCurUsername] = useState("");
 
   const navigate = useNavigate();
-
-  const toggleBlur = () => {
-    setIsBlur(!isBlur);
-  };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const res = await axios.get("http://localhost:3001/user/users");
-        if (res.status === 200) {
-          const data = res.data;
-          setCurUsername(data.curUsername);
-          setUserList(data.allUsers);
-        } else {
+        if (res.status !== 200) {
           navigate("/");
         }
-        // const res = await fetch("http://localhost:3001/user/users", {
-        //   method: "GET",
-        //   credentials: "include",
-        // });
-
-        // const data = await res.json();
-
-        // if (res.status === 200) {
-        //   setCurUsername(data.curUsername);
-        //   setUserList(data.allUsers);
-        // } else {
-        //   navigate("/");
-        // }
       } catch (err) {
         console.error(err);
       } finally {
@@ -50,7 +27,7 @@ export default function Dashboard() {
       }
     };
     fetchUsers();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
@@ -58,33 +35,13 @@ export default function Dashboard() {
         // something to show loading
         <Loading />
       ) : (
-        <>
-          <div className={isBlur ? "blur-sm" : ""}>
-            <Navbar />
-            <Sidebar toggleBlur={toggleBlur} />
-            <div className="pl-80 pt-28">
-              <h1 className="font-semibold text-4xl text-primary text-center mt-5">
-                Welcome {curUsername}! Start connecting to {userList.length}{" "}
-                users all over the world
-              </h1>
-              <div className="text-2xl mx-32 mt-8 ">
-                {userList.map((user, it) => {
-                  return (
-                    <div
-                      key={user.username}
-                      className="border border-text mb-4 bg-secondary rounded py-2 pl-3"
-                    >
-                      <h1>
-                        {it + 1}. {user.username}
-                      </h1>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <Createbox isBlur={isBlur} toggleBlur={toggleBlur} />
-        </>
+        <Layout>
+          <Content className="bg-black flex justify-center items-center	">
+            <Empty description={false} />
+          </Content>
+        </Layout>
+
+        //  <Createbox isBlur={isBlur} toggleBlur={toggleBlur} />
       )}
     </>
   );

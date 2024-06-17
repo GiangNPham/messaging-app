@@ -20,15 +20,7 @@ export default function Createbox({ isBlur, toggleBlur }) {
       const res = await axios.get(
         "http://localhost:3001/chat/checkuser/" + userName
       );
-      // const res = await fetch(
-      //   "http://localhost:3001/chat/checkuser/" + userName,
-      //   {
-      //     method: "GET",
-      //     credentials: "include",
-      //   }
-      // );
-      // const data = await res.json();
-      //   console.log(data);
+
       if (res.status !== 200) {
         return setErrorMsg(userName + ": " + res.data.err);
       }
