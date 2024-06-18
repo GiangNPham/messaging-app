@@ -67,15 +67,6 @@ export default function Createbox({ isBlur, toggleBlur }) {
           groupMem,
           groupName,
         });
-        // const res = await fetch("http://localhost:3001/chat/createGroup", {
-        //   method: "POST",
-        //   credentials: "include",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({ groupMem, groupName }),
-        // });
-        // const data = await res.json();
         if (res.status === 200) {
           navigate("/chat/" + res.data.chatID);
         }

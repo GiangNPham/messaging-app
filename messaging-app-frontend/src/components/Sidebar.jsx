@@ -1,6 +1,6 @@
 import { Button, ConfigProvider, Dropdown, Layout, Menu } from "antd";
 const { Sider } = Layout;
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, MessageOutlined } from "@ant-design/icons";
 
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -70,25 +70,30 @@ export default function Sidebar() {
 
   return (
     <Sider
-      breakpoint="sm"
+      breakpoint="md"
       collapsedWidth="100vw"
       id="sider-bg"
       width="25rem"
-      className="h-screen "
+      className="h-screen sidebar"
     >
-      <div className="flex justify-between px-4 pt-5">
-        <h1 className="text-3xl text-white">Chat</h1>
-        <Dropdown
-          menu={{
-            items,
-            onClick: onClickDropdown,
-          }}
-          placement="bottomLeft"
-        >
-          <Button className="sidebar-color border-transparent text-white	">
-            <MenuOutlined />
-          </Button>
-        </Dropdown>
+      <div className="flex justify-between px-4 pt-5 text-white">
+        <h1 className="text-3xl ">Chat</h1>
+        <div className="flex ">
+          <button className=" mr-2 px-3 py-1 rounded-lg hover:bg-white hover:text-black">
+            <MessageOutlined style={{ fontSize: "1.5rem" }} />
+          </button>
+          <Dropdown
+            menu={{
+              items,
+              onClick: onClickDropdown,
+            }}
+            placement="bottomLeft"
+          >
+            <button className="sidebar-color px-4 py-1 rounded-lg hover:bg-white hover:text-black ">
+              <MenuOutlined />
+            </button>
+          </Dropdown>
+        </div>
       </div>
       {/* <Menu mode="vertical" items={allConversations} inlineCollapsed={false} /> */}
       <nav className="flex flex-col	mt-5 px-4">

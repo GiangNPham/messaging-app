@@ -22,15 +22,6 @@ export default function Profile() {
         const res = await axios.patch("http://localhost:3001/user/username`", {
           username,
         });
-        // const res = await fetch(`http://localhost:3001/user/username`, {
-        //   method: "PATCH",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   credentials: "include",
-        //   body: JSON.stringify({ username }),
-        // });
-        // const data = await res.json();
         if (res.status === 200) {
           navigate("/dashboard");
         } else {
@@ -44,15 +35,6 @@ export default function Profile() {
         const res = await axios.patch("http://localhost:3001/user/password", {
           password,
         });
-        // const res = await fetch(`http://localhost:3001/user/password`, {
-        //   method: "PATCH",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   credentials: "include",
-        //   body: JSON.stringify({ password }),
-        // });
-        // const data = await res.json();
         if (res.status === 200) {
           navigate("/dashboard");
         } else {
