@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SendOutlined } from "@ant-design/icons";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/chat.css";
 
@@ -19,6 +19,8 @@ export default function Chat() {
   const [friendListName, setFriendListName] = useState([]);
   const [messageContent, setMessageContent] = useState("");
 
+  const messagesEndRef = useRef(null);
+
   const createMessage = async function (e) {
     e.preventDefault();
     if (messageContent.length === 0) return;
@@ -29,7 +31,6 @@ export default function Chat() {
           messageContent: messageContent,
         }
       );
-      // console.log(res.data.newMessage);
       socket.emit("sendMessage", res.data.newMessage);
       setMessageContent("");
     } catch (err) {
@@ -37,24 +38,33 @@ export default function Chat() {
     }
   };
 
-  useEffect(() => {
-    async function fetchChats() {
-      try {
-        const res = await axios.get(
-          "http://localhost:3001/chat/conversation/" + id
-        );
-        const data = res.data;
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-        setMessages(data.allMessages);
-        setCurUser(data.curUserID);
-        setGroupName(data.groupName);
-        setFriendListName(data.friendListName);
-      } catch (err) {
-        console.error(err);
-      }
+  const fetchChats = useCallback(async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3001/chat/conversation/" + id
+      );
+      const data = res.data;
+
+      setMessages(data.allMessages);
+      setCurUser(data.curUserID);
+      setGroupName(data.groupName);
+      setFriendListName(data.friendListName);
+    } catch (err) {
+      console.error(err);
     }
+  }, [id]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
     fetchChats();
-  }, [id, navigate]);
+  }, [fetchChats]);
 
   useEffect(() => {
     socket.on("receiveMessage", (message) => {
@@ -74,7 +84,10 @@ export default function Chat() {
           {messages.map((message) => {
             if (message.sender !== curUser) {
               return (
-                <div key={message._id} className="my-1 ml-80">
+                <div
+                  key={message._id}
+                  className="my-1 ml-16 sm:ml-32 xl:ml-80 lg:ml-48"
+                >
                   <p className="text-sm opacity-80	text-white">
                     {message.senderName}
                   </p>
@@ -86,16 +99,17 @@ export default function Chat() {
             } else {
               return (
                 <div key={message._id} className="flex justify-end my-1">
-                  <p className="mr-80 w-fit py-2 px-3 text-base  rounded-lg bg-primary text-black ">
+                  <p className="mr-16 sm:mr-32 xl:mr-80 lg:mr-48 w-fit py-2 px-3 text-base  rounded-lg bg-primary text-black ">
                     {message.content}
                   </p>
                 </div>
               );
             }
           })}
+          <div ref={messagesEndRef} />
         </div>
         <form
-          className="mx-80 pt-2 flex message-input"
+          className="mx-16 sm:mx-32 xl:mx-80 lg:mx-48 pt-2 flex message-input"
           onSubmit={(e) => createMessage(e)}
         >
           <input

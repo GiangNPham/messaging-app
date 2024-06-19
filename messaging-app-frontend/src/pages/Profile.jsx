@@ -1,50 +1,38 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Input, notification } from "antd";
 
-import Loading from "../pages/Loading";
+import "../styles/profile.css";
 import axios from "axios";
 
 export default function Profile() {
-  // set an useState of isLoading to prevent fetching the front end before the authorization finished
-  // const [isLoading, setIsLoading] = useState(true);
-
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState();
-  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   const updateHandle = async (e) => {
     e.preventDefault();
 
     try {
-      if (username.length !== 0) {
-        const res = await axios.patch("http://localhost:3001/user/username`", {
-          username,
-        });
-        if (res.status === 200) {
-          navigate("/dashboard");
-        } else {
-          setErrorMsg(res.data.err);
-        }
-      }
       if (password.length !== 0 || passwordConfirmation.length !== 0) {
         if (password !== passwordConfirmation) {
-          return setErrorMsg("Two passwords are not the same");
+          return notification.error({
+            message: "Update unsucessfully",
+            description: "Passwords are not matching!",
+          });
         }
-        const res = await axios.patch("http://localhost:3001/user/password", {
+        await axios.patch("http://localhost:3001/user/password", {
           password,
         });
-        if (res.status === 200) {
-          navigate("/dashboard");
-        } else {
-          setErrorMsg(res.data.err);
-        }
+
+        navigate("/dashboard");
       }
     } catch (err) {
-      console.error(err);
+      notification.error({
+        message: "Update unsucessfully",
+        description: err.response.data.err,
+      });
     } finally {
-      setUsername("");
       setPassword("");
       setPasswordConfirmation("");
     }
@@ -52,51 +40,41 @@ export default function Profile() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen w-screen">
+      <div className="flex justify-center items-center h-screen w-screen bg-black">
         <form
-          className="flex flex-col bg-secondary py-10 px-12 rounded-md"
+          className="flex flex-col py-10 px-12 rounded-md profile-form w-96"
           onSubmit={(e) => updateHandle(e)}
         >
-          <h1 className="text-2xl font-bold text-center mb-5">
-            Update profile
+          <h1 className="text-2xl font-bold mb-5 text-white">
+            Update password
           </h1>
 
-          <label htmlFor="username">New username</label>
-          <input
-            name="username"
-            value={username}
-            className="w-72 rounded mt-2 mb-3 h-8 pl-2"
-            placeholder="leave blank to keep the same"
-            onChange={(e) => setUsername(e.target.value.trim())}
-          />
-
-          <label htmlFor="password">New password</label>
-          <input
+          <label htmlFor="password" className="text-white text-base">
+            New password
+          </label>
+          <Input.Password
+            placeholder="input password"
             name="password"
-            type="password"
             value={password}
-            className="w-72 rounded mt-2 mb-3 h-8 pl-2"
-            placeholder="leave blank to keep the same"
             onChange={(e) => setPassword(e.target.value.trim())}
           />
 
-          <label htmlFor="passwordConfirmation">Password confirmation</label>
-          <input
+          <label
+            htmlFor="passwordConfirmation"
+            className="text-white text-base mt-3"
+          >
+            Password confirmation
+          </label>
+          <Input.Password
+            placeholder="confirm password"
             name="passwordConfirmation"
-            type="password"
             value={passwordConfirmation}
-            className="w-72 rounded mt-2 mb-3 h-8 pl-2"
-            placeholder="leave blank to keep the same"
             onChange={(e) => setPasswordConfirmation(e.target.value.trim())}
           />
 
-          {errorMsg != "" ? (
-            <h3 className="text-base text-red-600 mb-1">{errorMsg}</h3>
-          ) : null}
-
           <button
             type="submit"
-            className="w-full bg-accent rounded mt-3 py-1 font-semibold"
+            className="w-full bg-primary rounded mt-8 py-1 "
           >
             Update
           </button>

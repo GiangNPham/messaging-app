@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Dropdown, Layout, Menu } from "antd";
+import { Button, ConfigProvider, Dropdown, Layout } from "antd";
 const { Sider } = Layout;
 import { MenuOutlined, MessageOutlined } from "@ant-design/icons";
 
@@ -9,9 +9,13 @@ import axios from "axios";
 
 import "../styles/sidebar.css";
 
-export default function Sidebar() {
+export default function Sidebar({ setIsModalOpen }) {
   const navigate = useNavigate();
   const [allConversations, setAllConversations] = useState([]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
   const fetchConversations = useCallback(async () => {
     try {
@@ -70,16 +74,19 @@ export default function Sidebar() {
 
   return (
     <Sider
-      breakpoint="md"
-      collapsedWidth="100vw"
       id="sider-bg"
       width="25rem"
-      className="h-screen sidebar"
+      breakpoint="md"
+      collapsedWidth="0"
+      className="h-screen sidebar "
     >
       <div className="flex justify-between px-4 pt-5 text-white">
         <h1 className="text-3xl ">Chat</h1>
         <div className="flex ">
-          <button className=" mr-2 px-3 py-1 rounded-lg hover:bg-white hover:text-black">
+          <button
+            className=" mr-2 px-3 py-1 rounded-lg hover:bg-white hover:text-black"
+            onClick={openModal}
+          >
             <MessageOutlined style={{ fontSize: "1.5rem" }} />
           </button>
           <Dropdown
@@ -95,7 +102,7 @@ export default function Sidebar() {
           </Dropdown>
         </div>
       </div>
-      {/* <Menu mode="vertical" items={allConversations} inlineCollapsed={false} /> */}
+
       <nav className="flex flex-col	mt-5 px-4">
         {allConversations.map((convo, index) => {
           return (

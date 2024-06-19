@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
-import Createbox from "../components/Createbox";
 import Loading from "../pages/Loading";
 import axios from "axios";
 import { Empty, Layout } from "antd";
@@ -40,8 +38,6 @@ export default function Dashboard() {
             <Empty description={false} />
           </Content>
         </Layout>
-
-        //  <Createbox isBlur={isBlur} toggleBlur={toggleBlur} />
       )}
     </>
   );
