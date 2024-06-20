@@ -64,8 +64,7 @@ const loginUser = async (req, res) => {
   }
   const userID = user._id;
   const token = createToken(userID);
-  res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-  res.status(200).json({ userID: user._id });
+  res.status(200).json({ userID: user._id, token: token });
 };
 
 const logoutUser = async (req, res) => {
@@ -77,17 +76,17 @@ const logoutUser = async (req, res) => {
   }
 };
 
-const checkAuthentication = async (req, res) => {
-  try {
-    const cki = req.cookies["jwt"];
-    if (cki) {
-      return res.status(200).json({ msg: "Authenticated" });
-    } else {
-      return res.status(401).json({ err: "Unauthenticated" });
-    }
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-};
+// const checkAuthentication = async (req, res) => {
+//   try {
+//     const cki = req.cookies["jwt"];
+//     if (cki) {
+//       return res.status(200).json({ msg: "Authenticated" });
+//     } else {
+//       return res.status(401).json({ err: "Unauthenticated" });
+//     }
+//   } catch (err) {
+//     res.status(400).json({ err });
+//   }
+// };
 
-module.exports = { signupUser, loginUser, logoutUser, checkAuthentication };
+module.exports = { signupUser, loginUser, logoutUser };

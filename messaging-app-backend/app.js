@@ -38,15 +38,6 @@ app.use(
 // set up database
 connectDB();
 
-// app.use(
-//   session({
-//     secret: process.env.cookie_key,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { maxAge: 6000000 },
-//   })
-// );
-
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/chat", chatRouter);
@@ -67,22 +58,5 @@ io.on("connection", (socket) => {
 server.listen(3001, () => {
   console.log("server is running");
 });
-/*
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
-});
-*/
 
 module.exports = app;

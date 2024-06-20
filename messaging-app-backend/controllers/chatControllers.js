@@ -39,7 +39,6 @@ const createDirect = async (req, res) => {
     });
 
     if (existingChat.length === 0) {
-      // stop here*****
       const newDirect = new Conversation({
         friendList: [curUserID, directUserID],
         friendListName: [curUsername, directUsername],

@@ -2,7 +2,6 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 
 const User = require("../models/userSchema");
-const Message = require("../models/messageSchema");
 const Conversation = require("../models/conversationSchema");
 
 // Get user's all conversations and all users
@@ -16,24 +15,6 @@ const getConversations = async (req, res) => {
     });
 
     res.status(200).json({ allConversations });
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-};
-
-const getUsers = async (req, res) => {
-  try {
-    const curUserID = res.userID;
-    const allUsers = await User.find({
-      _id: { $ne: curUserID },
-    }).select("-password");
-
-    const curUser = await User.findOne({
-      _id: { $eq: curUserID },
-    }).select("-password");
-    const curUsername = curUser.username;
-
-    res.status(200).json({ allUsers, curUsername });
   } catch (err) {
     res.status(400).json({ err });
   }
@@ -88,4 +69,4 @@ const updateUsername = async (req, res) => {
   }
 };
 
-module.exports = { getConversations, getUsers, updatePassword, updateUsername };
+module.exports = { getConversations, updatePassword, updateUsername };
