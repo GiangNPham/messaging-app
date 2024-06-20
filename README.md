@@ -6,3 +6,4 @@
 - Backend: ExpressJS
 - Database: MongoDB
 - Authentication: JWT
+- Socket: Socket.IO
