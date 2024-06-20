@@ -5,8 +5,7 @@ import { MenuOutlined, MessageOutlined } from "@ant-design/icons";
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import axios from "axios";
-
+import axiosClient from "../utils/axiosClient";
 import "../styles/sidebar.css";
 
 export default function Sidebar({ setIsModalOpen }) {
@@ -19,7 +18,9 @@ export default function Sidebar({ setIsModalOpen }) {
 
   const fetchConversations = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:3001/user/conversations");
+      const res = await axiosClient.get(
+        "http://localhost:3001/user/conversations"
+      );
       const tmpConvo = res.data.allConversations;
       const allConvos = tmpConvo.map((convo) => {
         return {
@@ -29,24 +30,17 @@ export default function Sidebar({ setIsModalOpen }) {
       });
       setAllConversations(allConvos);
     } catch (err) {
-      navigate("/");
+      navigate("/login");
     }
   }, [navigate]);
 
   const onClickDropdown = ({ key }) => {
-    console.log(key);
     if (key === "3") logoutHandler();
   };
 
-  const logoutHandler = async function () {
-    try {
-      const res = await axios.get("http://localhost:3001/auth/logout");
-      if (res.status === 200) {
-        navigate("/");
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  const logoutHandler = function () {
+    localStorage.clear();
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -60,7 +54,7 @@ export default function Sidebar({ setIsModalOpen }) {
   const items = [
     {
       key: "1",
-      label: <Link to="/">Dashboard</Link>,
+      label: <Link to="/dashboard">Dashboard</Link>,
     },
     {
       key: "2",
@@ -75,19 +69,19 @@ export default function Sidebar({ setIsModalOpen }) {
   return (
     <Sider
       id="sider-bg"
-      width="25rem"
+      width="26rem"
       breakpoint="md"
-      collapsedWidth="0"
-      className="h-screen sidebar "
+      collapsedWidth="9rem"
+      className="h-screen sidebar px-1 lg:px-4"
     >
-      <div className="flex justify-between px-4 pt-5 text-white">
-        <h1 className="text-3xl ">Chat</h1>
+      <div className="flex justify-between  pt-5 text-white">
+        <h1 className="text-xl lg:text-3xl ">Chat</h1>
         <div className="flex ">
           <button
             className=" mr-2 px-3 py-1 rounded-lg hover:bg-white hover:text-black"
             onClick={openModal}
           >
-            <MessageOutlined style={{ fontSize: "1.5rem" }} />
+            <MessageOutlined style={{ fontSize: "1rem" }} />
           </button>
           <Dropdown
             menu={{
@@ -96,14 +90,14 @@ export default function Sidebar({ setIsModalOpen }) {
             }}
             placement="bottomLeft"
           >
-            <button className="sidebar-color px-4 py-1 rounded-lg hover:bg-white hover:text-black ">
-              <MenuOutlined />
+            <button className="sidebar-color px-1 lg:px-4 py-1 rounded-lg hover:bg-white hover:text-black ">
+              <MenuOutlined style={{ fontSize: "1rem" }} />
             </button>
           </Dropdown>
         </div>
       </div>
 
-      <nav className="flex flex-col	mt-5 px-4">
+      <nav className="flex flex-col	mt-5 ">
         {allConversations.map((convo, index) => {
           return (
             <ConfigProvider key={convo.key} wave={{ disabled: true }}>

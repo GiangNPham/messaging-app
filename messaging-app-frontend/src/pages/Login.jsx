@@ -3,23 +3,16 @@ import { Form, Input, notification } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import PropTypes from "prop-types";
-import { useEffect, useContext } from "react";
-
-import { AuthContext } from "../context/authContext";
-import axios from "axios";
 
 import login from "../assets/login.png";
 import "../styles/login.css";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Login() {
-  const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (isAuthenticated) navigate("/dashboard");
-  }, [isAuthenticated, navigate]);
+  const [form] = Form.useForm();
 
   const notifyError = (e) => {
     notification.error({
@@ -30,15 +23,21 @@ export default function Login() {
 
   const loginHandler = async (values) => {
     try {
-      await axios.post("http://localhost:3001/auth/login", {
+      const res = await axios.post("http://localhost:3001/auth/login", {
         username: values.username.trim(),
         password: values.password.trim(),
       });
+      localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
     } catch (err) {
+      debugger;
       notifyError(err);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/dashboard");
+  }, [navigate]);
 
   return (
     <div className="flex justify-center items-center h-screen absolute top-0 left-0 w-screen login-page">

@@ -5,7 +5,12 @@
   background-color: #dfecf5;
 }
 .chatbox {
-  height: calc(100vh - 114px);
+  height: calc(100vh - 118px);
+}
+.chat-width {
+  max-width: 800px;
+  padding: 0 10px;
+  margin: 0 auto;
 }
 .chatCreate::placeholder {
   color: black;

@@ -1,23 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Input, notification } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { useEffect, useContext } from "react";
-
-import { AuthContext } from "../context/authContext";
-import axios from "axios";
-
+import { useEffect } from "react";
+import axiosClient from "../utils/axiosClient";
 import login from "../assets/login.png";
 import "../styles/signup.css";
 
 export default function Signup() {
-  const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (isAuthenticated) navigate("/user");
-  }, [isAuthenticated, navigate]);
+  const [form] = Form.useForm();
 
   const notifyError = (e) => {
     notification.error({
@@ -28,16 +20,20 @@ export default function Signup() {
 
   const signupHandler = async (values) => {
     try {
-      await axios.post("http://localhost:3001/auth/signup", {
+      await axiosClient.post("http://localhost:3001/auth/signup", {
         username: values.username.trim(),
         password: values.password.trim(),
         passwordConfirmation: values.passwordConfirmation.trim(),
       });
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       notifyError(err);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/dashboard");
+  }, [navigate]);
 
   return (
     <div className="flex justify-center h-screen items-center signup-page">
@@ -105,7 +101,7 @@ export default function Signup() {
               Sign up
             </button>
             Or{" "}
-            <Link to="/" className="font-semibold">
+            <Link to="/login" className="font-semibold">
               log in!
             </Link>
           </Form.Item>

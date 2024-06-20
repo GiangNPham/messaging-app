@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Input, notification } from "antd";
 
 import "../styles/profile.css";
-import axios from "axios";
-
+import axiosClient from "../utils/axiosClient";
 export default function Profile() {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState();
@@ -21,7 +20,7 @@ export default function Profile() {
             description: "Passwords are not matching!",
           });
         }
-        await axios.patch("http://localhost:3001/user/password", {
+        await axiosClient.patch("http://localhost:3001/user/password", {
           password,
         });
 

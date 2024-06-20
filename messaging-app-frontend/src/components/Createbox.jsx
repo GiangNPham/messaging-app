@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Modal, Input, notification } from "antd";
 import "../styles/createbox.css";
+import axiosClient from "../utils/axiosClient";
 
 export default function Createbox({ isModalOpen, setIsModalOpen }) {
   // const [errorMsg, setErrorMsg] = useState("");
@@ -22,7 +22,7 @@ export default function Createbox({ isModalOpen, setIsModalOpen }) {
     e.preventDefault();
     try {
       // check if user exists
-      await axios.get("http://localhost:3001/chat/checkuser/" + userName);
+      await axiosClient.get("http://localhost:3001/chat/checkuser/" + userName);
       if (groupMem.includes(userName)) {
         return notification.error({
           message: "Add user unsuccessful",
@@ -50,7 +50,7 @@ export default function Createbox({ isModalOpen, setIsModalOpen }) {
     // 2 cases: 1-1 chat and group chat
     if (groupMem.length === 1) {
       try {
-        const res = await axios.post(
+        const res = await axiosClient.post(
           "http://localhost:3001/chat/createDirect",
           {
             groupMem,
@@ -67,10 +67,13 @@ export default function Createbox({ isModalOpen, setIsModalOpen }) {
         if (groupName === "") {
           console.log("Please fill out the group's name");
         }
-        const res = await axios.post("http://localhost:3001/chat/createGroup", {
-          groupMem,
-          groupName,
-        });
+        const res = await axiosClient.post(
+          "http://localhost:3001/chat/createGroup",
+          {
+            groupMem,
+            groupName,
+          }
+        );
         if (res.status === 200) {
           setGroupMem([]);
           setIsModalOpen(false);

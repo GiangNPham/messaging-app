@@ -8,37 +8,25 @@ import Dashboard from "./pages/Dashboard";
 
 import "./App.css";
 
-import { AuthProvider } from "./context/authContext";
 import AppLayout from "./Layout";
+import RouteGuard from "./utils/RouteGuard";
 
 function App() {
   return (
     <>
-      <div className="app relative">
+      <div className="app">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <AuthProvider>
-                <Login />
-              </AuthProvider>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <AuthProvider>
-                <Signup />
-              </AuthProvider>
-            }
-          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
           {/* Dashboard to display all conversations and users */}
 
           <Route path="/" element={<AppLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="chat/:id" element={<Chat />} />
-            <Route path="user" element={<Profile />} />
+            <Route element={<RouteGuard />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="chat/:id" element={<Chat />} />
+              <Route path="user" element={<Profile />} />
+            </Route>
           </Route>
         </Routes>
       </div>

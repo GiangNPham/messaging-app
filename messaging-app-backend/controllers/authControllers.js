@@ -67,15 +67,6 @@ const loginUser = async (req, res) => {
   res.status(200).json({ userID: user._id, token: token });
 };
 
-const logoutUser = async (req, res) => {
-  try {
-    await res.clearCookie("jwt");
-    res.status(200).json("Log out successfully");
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-};
-
 // const checkAuthentication = async (req, res) => {
 //   try {
 //     const cki = req.cookies["jwt"];
@@ -89,4 +80,4 @@ const logoutUser = async (req, res) => {
 //   }
 // };
 
-module.exports = { signupUser, loginUser, logoutUser };
+module.exports = { signupUser, loginUser };
