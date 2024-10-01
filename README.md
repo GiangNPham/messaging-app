@@ -1,4 +1,4 @@
-# Real-time messaging app: My first ever **full-stack** project
+# Chatty: real-time messaging application
 
 ## Tech:
 
